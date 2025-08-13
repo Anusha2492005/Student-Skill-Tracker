@@ -10,7 +10,7 @@ The Student Skill Tracker System is a web-based platform designed to help studen
 
 | *Home Page* | *Student Dashboard* |
 |-------------|----------------------|
-| ![Home Page](Home page.png) | ![Student Dashboard](Student dashboard.png) |
+| ![Home Page](Homepage.png) | ![Student Dashboard](Studentdashboard.png) |
 
 | *Login Page* | *Signup Page* |
 |--------------|---------------|
