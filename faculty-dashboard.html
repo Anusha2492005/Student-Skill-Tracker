@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - SkillTracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        
+        <div class="dashboard-header" style="background: linear-gradient(135deg, #059669, #10b981);">
+            <div class="container">
+                <h1><i class="fas fa-chalkboard-teacher"></i> Faculty Dashboard</h1>
+                <p id="welcomeMessage">Welcome back, Faculty!</p>
+            </div>
+        </div>
+
+        <div class="dashboard-nav">
+            <div class="container">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="showFacultySection('overview')">
+                        <i class="fas fa-chart-pie"></i> Overview
+                    </button>
+                    <button class="nav-tab" onclick="showFacultySection('students')">
+                        <i class="fas fa-users"></i> Students
+                    </button>
+                    <button class="nav-tab" onclick="showFacultySection('placement')">
+                        <i class="fas fa-briefcase"></i> Placement Analysis
+                    </button>
+                    <button class="nav-tab" onclick="showFacultySection('reports')">
+                        <i class="fas fa-file-chart"></i> Reports
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Overview Section -->
+                <div id="overview" class="content-section active">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-users"></i> Student Statistics</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalStudents">0</div>
+                                    <div class="stat-label">Total Students</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="activeStudents">0</div>
+                                    <div class="stat-label">Active Students</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="avgSkills">0</div>
+                                    <div class="stat-label">Avg Skills per Student</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="placementReady">0</div>
+                                    <div class="stat-label">Placement Ready</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-chart-bar"></i> Department Overview</h3>
+                            <canvas id="departmentChart" width="400" height="200"></canvas>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-trophy"></i> Top Performing Students</h3>
+                            <div id="topStudents">
+                                <p class="text-center text-gray">Loading student data...</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-bell"></i> Recent Activities</h3>
+                            <div id="recentActivities">
+                                <div class="activity-item">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>New student registrations this week: <strong>5</strong></span>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>Certifications added this month: <strong>23</strong></span>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>New projects uploaded: <strong>12</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Section -->
+                <div id="students" class="content-section">
+                    <div class="card">
+                        <h3><i class="fas fa-search"></i> Search & Filter Students</h3>
+                        <div class="search-filters">
+                            <div class="form-group">
+                                <input type="text" id="searchInput" placeholder="Search by name or email..." style="width: 100%;">
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div class="form-group">
+                                    <select id="departmentFilter">
+                                        <option value="">All Departments</option>
+                                        <option value="CSE">Computer Science & Engineering</option>
+                                        <option value="ECE">Electronics & Communication</option>
+                                        <option value="ME">Mechanical Engineering</option>
+                                        <option value="CE">Civil Engineering</option>
+                                        <option value="IT">Information Technology</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select id="yearFilter">
+                                        <option value="">All Years</option>
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select id="skillFilter">
+                                        <option value="">All Skills</option>
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="python">Python</option>
+                                        <option value="java">Java</option>
+                                        <option value="react">React</option>
+                                        <option value="nodejs">Node.js</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="form-btn primary" onclick="applyFilters()" style="margin-top: 1rem;">
+                                <i class="fas fa-filter"></i> Apply Filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-list"></i> Students List</h3>
+                        <div id="studentsList">
+                            <p class="text-center text-gray">No students found. Students need to register first.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placement Analysis Section -->
+                <div id="placement" class="content-section">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-chart-pie"></i> Placement Readiness Distribution</h3>
+                            <canvas id="placementChart" width="400" height="200"></canvas>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-star"></i> Skills Analysis</h3>
+                            <canvas id="skillsAnalysisChart" width="400" height="200"></canvas>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-filter"></i> Advanced Filters</h3>
+                            <form id="placementFilters">
+                                <div class="form-group">
+                                    <label>Minimum Placement Score</label>
+                                    <input type="range" id="minScore" min="0" max="100" value="60" oninput="updateScoreLabel(this.value)">
+                                    <span id="scoreLabel">60%</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Required Skills</label>
+                                    <input type="text" id="requiredSkills" placeholder="e.g., JavaScript, React, Node.js">
+                                </div>
+                                <div class="form-group">
+                                    <label>Minimum Projects</label>
+                                    <select id="minProjects">
+                                        <option value="0">Any</option>
+                                        <option value="1">1+</option>
+                                        <option value="2">2+</option>
+                                        <option value="3">3+</option>
+                                        <option value="5">5+</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="form-btn primary" onclick="applyPlacementFilters()">
+                                    <i class="fas fa-search"></i> Find Candidates
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-users"></i> Qualified Candidates</h3>
+                            <div id="qualifiedCandidates">
+                                <p class="text-center text-gray">Use filters to find qualified candidates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reports" class="content-section">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-download"></i> Generate Reports</h3>
+                            <div class="report-options">
+                                <button class="form-btn secondary" onclick="generateReport('skills')" style="margin: 0.5rem; width: auto;">
+                                    <i class="fas fa-cogs"></i> Skills Report
+                                </button>
+                                <button class="form-btn secondary" onclick="generateReport('students')" style="margin: 0.5rem; width: auto;">
+                                    <i class="fas fa-users"></i> Students Report
+                                </button>
+                                <button class="form-btn secondary" onclick="generateReport('placement')" style="margin: 0.5rem; width: auto;">
+                                    <i class="fas fa-briefcase"></i> Placement Report
+                                </button>
+                                <button class="form-btn secondary" onclick="generateReport('department')" style="margin: 0.5rem; width: auto;">
+                                    <i class="fas fa-building"></i> Department Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-calendar-alt"></i> Activity Timeline</h3>
+                            <div id="activityTimeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">Today</div>
+                                    <div class="timeline-content">
+                                        <p><strong>3</strong> new students registered</p>
+                                        <p><strong>7</strong> skills were added</p>
+                                        <p><strong>2</strong> projects were uploaded</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">Yesterday</div>
+                                    <div class="timeline-content">
+                                        <p><strong>5</strong> certifications were added</p>
+                                        <p><strong>12</strong> profile updates</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">This Week</div>
+                                    <div class="timeline-content">
+                                        <p><strong>25</strong> new registrations</p>
+                                        <p><strong>134</strong> skills added</p>
+                                        <p><strong>67</strong> projects uploaded</p>
+                                        <p><strong>45</strong> certifications added</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="faculty-dashboard.js"></script>
+</body>
+</html>

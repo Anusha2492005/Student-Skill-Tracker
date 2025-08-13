@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Skill Tracker - Track • Grow • Shine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-page">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>SkillTracker</span>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="showLogin()">Login</button>
+                    <button class="nav-btn primary" onclick="showSignup()">Sign Up</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Track • Grow • Shine</h1>
+                <p>Empower your academic journey and professional growth with our comprehensive skill tracking platform</p>
+                <div class="hero-buttons">
+                    <button class="hero-btn primary" onclick="showSignup()">Get Started</button>
+                    <button class="hero-btn secondary" onclick="showLogin()">Login</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <div class="container">
+                <h2>Why Choose SkillTracker?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Skill Analytics</h3>
+                        <p>Track and visualize your skill development with detailed charts and progress reports</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-certificate"></i>
+                        <h3>Certification Management</h3>
+                        <p>Upload and organize your certificates and course documents in one place</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>Project Portfolio</h3>
+                        <p>Showcase your projects with descriptions, technologies, and live links</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Auto Resume Generator</h3>
+                        <p>Generate professional resumes automatically from your profile data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Welcome Back</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Select Role</label>
+                    <div class="role-selector">
+                        <input type="radio" id="studentLogin" name="role" value="student" checked>
+                        <label for="studentLogin">Student</label>
+                        <input type="radio" id="facultyLogin" name="role" value="faculty">
+                        <label for="facultyLogin">Faculty</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="form-btn primary">Login</button>
+            </form>
+            <p class="form-footer">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Join SkillTracker</h2>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>Register as</label>
+                    <div class="role-selector">
+                        <input type="radio" id="studentSignup" name="role" value="student" checked onchange="toggleSignupFields()">
+                        <label for="studentSignup">Student</label>
+                        <input type="radio" id="facultySignup" name="role" value="faculty" onchange="toggleSignupFields()">
+                        <label for="facultySignup">Faculty</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="fullName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email Address" required>
+                </div>
+                <div id="studentFields">
+                    <div class="form-group">
+                        <input type="text" id="studentId" placeholder="Student ID" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="department" required>
+                            <option value="">Select Department</option>
+                            <option value="CSE">Computer Science & Engineering</option>
+                            <option value="ECE">Electronics & Communication</option>
+                            <option value="ME">Mechanical Engineering</option>
+                            <option value="CE">Civil Engineering</option>
+                            <option value="IT">Information Technology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="year" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="facultyFields" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="employeeId" placeholder="Employee ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="facultyDepartment" placeholder="Department">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="form-btn primary">Create Account</button>
+            </form>
+            <p class="form-footer">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
